@@ -6,7 +6,7 @@ Links to other microservices:
 - https://github.com/JamieBShaw/user-service
 
 ## auth-service
-![Alt Text](/gif.output.gif)
+![Alt Text](https://github.com/JamieBShaw/auth-service/blob/master/gif/output.gif)
 
 
 Implementation of an auth microservice currently using http, generates access tokens (with refresh, expiry dates etc.).
