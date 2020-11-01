@@ -6,5 +6,5 @@ func (s *httpServer) routes() {
 
 	post := s.router.Methods(http.MethodPost).Subrouter()
 
-	post.HandleFunc("/login", s.Create)
+	post.HandleFunc("/auth/create/{id}", s.Create)
 }

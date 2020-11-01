@@ -3,19 +3,23 @@ package redis
 import (
 	"github.com/JamieBShaw/auth-service/domain/model"
 	"github.com/go-redis/redis/v7"
+	"github.com/sirupsen/logrus"
 	"strconv"
 	"time"
 )
 
 type repo struct {
 	client *redis.Client
+	log *logrus.Logger
 }
 
-func NewRepo(client *redis.Client) *repo {
-	return &repo{client: client}
+func NewRepo(client *redis.Client, log *logrus.Logger) *repo {
+	return &repo{client: client, log: log}
 }
 
-func (r repo) CreateAuth(userId int64, tkn *model.AccessToken) error {
+func (r *repo) CreateAuth(userId int64, tkn *model.AccessToken) error {
+	r.log.Info("[REDIS REPO] Executing CreateAuthToken")
+
 	at := time.Unix(tkn.AtExpires, 0) //converting Unix to UTC(to Time object)
 	rt := time.Unix(tkn.RtExpires, 0)
 	now := time.Now()

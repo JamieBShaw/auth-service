@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/twinj/uuid"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/twinj/uuid"
 	"os"
 	"time"
 )

@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"flag"
-	"github.com/JamieBShaw/auth-service/repository/sqlite"
 	rd "github.com/JamieBShaw/auth-service/repository/redis"
+	"github.com/JamieBShaw/auth-service/repository/sqlite"
 	service "github.com/JamieBShaw/auth-service/service"
 	internalhttp "github.com/JamieBShaw/auth-service/transport/http"
 	"github.com/go-redis/redis/v7"
-	"github.com/sirupsen/logrus"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
@@ -29,7 +29,6 @@ var (
 	sqlFlag = flag.Bool("sql", false, "service will use Sqlite3 as repo instead as default Redis")
 )
 
-
 func main() {
 	if *sqlFlag {
 		db, err := sql.Open(driver, db)
@@ -39,8 +38,8 @@ func main() {
 		defer db.Close()
 
 		sqlRepo := sqlite.NewRepository(db)
-		authService := service.NewAuthService(sqlRepo)
-		_ = internalhttp.NewHttpServer(authService, router)
+		authService := service.NewAuthService(sqlRepo, log)
+		_ = internalhttp.NewHttpServer(authService, router, log)
 
 	} else {
 
@@ -50,15 +49,17 @@ func main() {
 		}
 		client := redis.NewClient(&redis.Options{
 			Addr: dsn, //redis port
+			Password: "",
+			DB: 0,
 		})
 		_, err := client.Ping().Result()
 		if err != nil {
 			log.Fatal(err)
 		}
-		redisRepo := rd.NewRepo(client)
+		redisRepo := rd.NewRepo(client, log)
 
-		authService := service.NewAuthService(redisRepo)
-		handler := internalhttp.NewHttpServer(authService, router)
+		authService := service.NewAuthService(redisRepo, log)
+		handler := internalhttp.NewHttpServer(authService, router, log)
 
 		srv := &http.Server{
 			Addr:         "0.0.0.0:" + port,
