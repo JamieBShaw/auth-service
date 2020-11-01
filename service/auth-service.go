@@ -3,7 +3,7 @@ package service
 import "github.com/JamieBShaw/auth-service/repository"
 
 type AuthService interface {
-	Login(userId int64)
+	Login(userId int64) error
 }
 
 type authService struct {
