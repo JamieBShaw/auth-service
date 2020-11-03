@@ -12,17 +12,26 @@ const (
 )
 
 type AccessToken struct {
-	AccessToken string `json:"access_token"`
+	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
-	
-	AccessUuid string `json:"access_uuid"`
-	RefreshUuid string `json:"refresh_uuid"`
-	
-	AtExpires   int64  `json:"at_expires"`
-	RtExpires   int64  `json:"rt_expires"`
 
-	UserId      int64  `json:"user_id"`
-	ClientId    int64  `json:"client_id,omitempty"`
+	AccessUuid  string `json:"access_uuid"`
+	RefreshUuid string `json:"refresh_uuid"`
+
+	AtExpires int64 `json:"at_expires"`
+	RtExpires int64 `json:"rt_expires"`
+
+	UserId   int64 `json:"user_id"`
+	ClientId int64 `json:"client_id,omitempty"`
+}
+
+type AuthTokens struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+func (a AuthTokens) Error() string {
+	panic("implement me")
 }
 
 func GetNewAccessToken(userId int64) (*AccessToken, error) {
@@ -59,7 +68,6 @@ func GetNewAccessToken(userId int64) (*AccessToken, error) {
 	if err != nil {
 		return nil, err
 	}
-
 
 	return tkn, nil
 }

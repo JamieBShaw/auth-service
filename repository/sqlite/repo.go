@@ -13,6 +13,6 @@ func (r repository) CreateAuth(userId int64, tkn *model.AccessToken) error {
 	return nil
 }
 
-func NewRepository(db *sql.DB) *repository {
+func NewRepo(db *sql.DB) *repository {
 	return &repository{Db: db}
 }

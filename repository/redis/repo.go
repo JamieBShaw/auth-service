@@ -10,7 +10,7 @@ import (
 
 type repo struct {
 	client *redis.Client
-	log *logrus.Logger
+	log    *logrus.Logger
 }
 
 func NewRepo(client *redis.Client, log *logrus.Logger) *repo {
@@ -24,14 +24,24 @@ func (r *repo) CreateAuth(userId int64, tkn *model.AccessToken) error {
 	rt := time.Unix(tkn.RtExpires, 0)
 	now := time.Now()
 
-	errAccess := r.client.Set(tkn.AccessUuid, strconv.Itoa(int(userId)), at.Sub(now)).Err()
-	if errAccess != nil {
-		return errAccess
+	err := r.client.Set(tkn.AccessUuid, strconv.Itoa(int(userId)), at.Sub(now)).Err()
+	if err != nil {
+		return err
 	}
-	errRefresh := r.client.Set(tkn.RefreshUuid, strconv.Itoa(int(userId)), rt.Sub(now)).Err()
-	if errRefresh != nil {
-		return errRefresh
+	err = r.client.Set(tkn.RefreshUuid, strconv.Itoa(int(userId)), rt.Sub(now)).Err()
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
+func (r *repo) DeleteAuth(accessUid string) error {
+	r.log.Info("[REDIS REPO] Executing CreateAuthToken")
+
+	deleted, err := r.client.Del(accessUid).Result()
+	if err != nil || deleted == 0 {
+		return err
+	}
+
+	return nil
+}
