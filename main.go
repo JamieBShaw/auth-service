@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	googlegrpc "google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"net"
 	"net/http"
 	"os"
@@ -57,6 +58,8 @@ func main() {
 		s := googlegrpc.NewServer()
 		srv := internalGrpc.NewGrpcServer(authService)
 		protob.RegisterAuthServiceServer(s, srv)
+
+		reflection.Register(s)
 
 		if err := s.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
