@@ -29,7 +29,7 @@ var (
 )
 
 func main() {
-
+	
 	dsn := os.Getenv("REDIS_DSN")
 	if len(dsn) == 0 {
 		dsn = "0.0.0.0:6379"

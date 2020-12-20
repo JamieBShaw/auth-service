@@ -45,6 +45,7 @@ func (gs *grpcServer) DeleteAccessToken(ctx context.Context, req *protob.DeleteA
 		return nil, status.Errorf(codes.Internal, "unable to delete token, error: %v", err.Error())
 	}
 
+
 	return &protob.DeleteAccessTokenResponse{
 		Confirmation: "User access token deleted",
 	}, nil
