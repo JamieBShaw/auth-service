@@ -11,3 +11,7 @@ Links to other microservices:
 
 Implementation of an auth microservice currently using http, generates access tokens (with refresh, expiry dates etc.).
 This connects to the already implemented user-service, link above.
+
+Can use both HTTP and GRPC, however, main implementation is to be used with grpc as this is meant for intra-microservice
+communication. It just uses a simple redis database to delete and insert users auth tokens.
+
