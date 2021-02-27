@@ -14,7 +14,7 @@ type AccessDetails struct {
 	AccessUuid string
 	UserId   int64
 }
-func AuthenticationMiddlware(next http.HandlerFunc) http.HandlerFunc {
+func AuthenticationMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 	return func(rw http.ResponseWriter, r *http.Request) {
 
